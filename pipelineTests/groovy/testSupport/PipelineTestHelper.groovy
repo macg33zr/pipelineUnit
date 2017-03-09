@@ -213,7 +213,7 @@ class PipelineTestHelper extends BasePipelineTest {
          * agent none
          */
         binding.setVariable('any', {})
-        binding.setVariable('any', {})
+        binding.setVariable('none', {})
 
         /**
          * checkout scm
