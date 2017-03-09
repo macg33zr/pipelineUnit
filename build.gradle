@@ -1,0 +1,31 @@
+apply plugin:   'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.8'
+
+    /**
+     * JenkinsPipelineUnit for testing pipelines from:
+     * https://github.com/lesfurets/JenkinsPipelineUnit
+     */
+    testCompile 'com.lesfurets:jenkins-pipeline-unit:0.11'
+
+    /**
+     * For Spock unit tests
+     */
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+    testCompile 'cglib:cglib-nodep:3.2.2'
+    testCompile 'org.objenesis:objenesis:1.2'
+}
+
+sourceSets {
+
+    test {
+        groovy {
+            srcDirs= ['pipelineTests/groovy']
+        }
+    }
+}
