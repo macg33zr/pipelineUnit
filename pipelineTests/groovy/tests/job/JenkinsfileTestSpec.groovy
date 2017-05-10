@@ -37,6 +37,9 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         printCallStack()
         assertJobStatusSuccess()
 
+        then:
+        testNonRegression("Jenkinsfile_Should_Run_Gradle_validate_${P_VALIDATE}_gradle_${P_GRADLE_TASKS_OPTIONS}", false)
+
         where:
         P_VALIDATE          | P_GRADLE_TASKS_OPTIONS | GRADLE_EXPECTED_CMD          | VAL_COUNT
         null                | null                   | 'gradle clean build test -i' | 0

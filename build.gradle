@@ -5,20 +5,22 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.8'
+    compile 'org.codehaus.groovy:groovy-all:2.4.11'
 
     /**
      * JenkinsPipelineUnit for testing pipelines from:
      * https://github.com/lesfurets/JenkinsPipelineUnit
      */
-    testCompile 'com.lesfurets:jenkins-pipeline-unit:0.11'
+    testCompile 'com.lesfurets:jenkins-pipeline-unit:0.12'
 
     /**
      * For Spock unit tests
      */
-    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
     testCompile 'cglib:cglib-nodep:3.2.2'
     testCompile 'org.objenesis:objenesis:1.2'
+    testCompile 'org.assertj:assertj-core:3.7.0'
+
 }
 
 sourceSets {
