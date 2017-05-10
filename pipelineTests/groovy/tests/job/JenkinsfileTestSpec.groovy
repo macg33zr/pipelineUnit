@@ -8,9 +8,14 @@ import testSupport.PipelineSpockTestBase
  */
 class JenkinsfileTestSpec extends PipelineSpockTestBase {
 
-    def "Jenkinsfile should run gradle tests with expected command line"() {
+    @Unroll
+    def "Jenkinsfile should run gradle tests with expected command line validate:#P_VALIDATE gradle: #P_GRADLE_TASKS_OPTIONS"() {
 
         given:
+        addParam('VALIDATE', P_VALIDATE)
+        addParam('GRADLE_TASKS_OPTIONS', P_GRADLE_TASKS_OPTIONS)
+
+        and:
         def shellMock = Mock(Closure)
         helper.registerAllowedMethod('sh', [String.class], shellMock)
 
@@ -22,12 +27,21 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         1 * shellMock.call(_) >> { args ->
 
             def shellCmd = args[0]
-            assert shellCmd == 'gradle clean build test -i'
+            assert shellCmd == GRADLE_EXPECTED_CMD
         }
+
+        then:
+        VAL_COUNT * shellMock.call('TODO_VALIDATION_COMMANDS')
 
         then:
         printCallStack()
         assertJobStatusSuccess()
+
+        where:
+        P_VALIDATE          | P_GRADLE_TASKS_OPTIONS | GRADLE_EXPECTED_CMD          | VAL_COUNT
+        null                | null                   | 'gradle clean build test -i' | 0
+        true                | 'test'                 | 'gradle test'                | 1
+        false               | 'build test'           | 'gradle build test'          | 0
     }
 
     def "Jenkinsfile gradle failure should fail job"() {

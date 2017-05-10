@@ -2,6 +2,11 @@ pipeline {
 
     agent any
 
+    parameters {
+        booleanParam(name: 'VALIDATE', defaultValue: false, description: 'Whether to run validation stage')
+        string(name: 'GRADLE_TASKS_OPTIONS', defaultValue: 'clean build test -i', description: 'Tasks and options for the gradle command')
+    }
+
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timestamps()
@@ -30,15 +35,18 @@ pipeline {
                         echo "GRADLE_HOME=${env.GRADLE_HOME}"
                         echo "PATH=${env.PATH}"
 
-                        sh 'gradle clean build test -i'
+                        sh "gradle ${params.GRADLE_TASKS_OPTIONS}"
                     }
                 }
             }
         }
 
         stage('validate') {
+
+            when { expression { return params.VALIDATE } }
+
             steps {
-                echo 'TODO: syntactic validation of Jenkinsfiles'
+                sh 'TODO_VALIDATION_COMMANDS'
             }
         }
     }
@@ -63,6 +71,5 @@ pipeline {
         unstable {
             echo 'pipeline unit tests have gone UNSTABLE'
         }
-
     }
 }
