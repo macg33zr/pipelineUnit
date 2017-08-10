@@ -268,11 +268,6 @@ class PipelineTestHelper extends BasePipelineTest {
         binding.setVariable('params', [:])
 
         /**
-         * Env passed in from Jenkins - may need to override in specific tests
-         */
-        binding.setVariable('env', [BUILD_NUMBER: '1234', PATH: '/some/path'])
-
-        /**
          * The currentBuild in the job
          */
         binding.setVariable('currentBuild', new Expando(result: 'SUCCESS', displayName: 'Build #1234'))
@@ -293,6 +288,12 @@ class PipelineTestHelper extends BasePipelineTest {
          * PATH
          */
         binding.setVariable('PATH', '/some/path')
+
+        /**
+         * Initialize a basic Env passed in from Jenkins - may need to override in specific tests
+         */
+        addEnvVar('BUILD_NUMBER', '1234')
+        addEnvVar('PATH', '/some/path')
     }
 
     /**
@@ -323,11 +324,10 @@ class PipelineTestHelper extends BasePipelineTest {
      * Helper for adding a environment value in tests
      */
     void addEnvVar(String name, String val) {
-        Map env = binding.getVariable('env') as Map
-        if (env == null) {
-            env = [:]
-            binding.setVariable('env', env)
+        if (!binding.hasVariable('env')) {
+            binding.setVariable('env', new Expando(getProperty: { p -> this[p] }, setProperty: { p, v -> this[p] = v }))
         }
+        def env = binding.getVariable('env') as Expando
         env[name] = val
     }
 }
