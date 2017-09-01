@@ -11,7 +11,7 @@ dependencies {
      * JenkinsPipelineUnit for testing pipelines from:
      * https://github.com/lesfurets/JenkinsPipelineUnit
      */
-    testCompile 'com.lesfurets:jenkins-pipeline-unit:0.12'
+    testCompile 'com.lesfurets:jenkins-pipeline-unit:1.1'
 
     /**
      * For Spock unit tests

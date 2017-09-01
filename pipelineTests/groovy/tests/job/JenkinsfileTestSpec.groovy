@@ -20,13 +20,14 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         helper.registerAllowedMethod('sh', [String.class], shellMock)
 
         when:
-        def script = loadScript('Jenkinsfile')
-        script.execute()
+        runScript('Jenkinsfile')
 
         then:
-        1 * shellMock.call(_) >> { args ->
+        1 * shellMock.call(_) >> { List args ->
 
-            def shellCmd = args[0]
+            // TODO: Understand why shell command string comes back as a single element array with JenkinsPipelineUnit 1.1
+            println "shellMock args : ${args.toString()}"
+            def shellCmd = args[0][0]
             assert shellCmd == GRADLE_EXPECTED_CMD
         }
 
@@ -38,7 +39,7 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         assertJobStatusSuccess()
 
         then:
-        testNonRegression("Jenkinsfile_Should_Run_Gradle_validate_${P_VALIDATE}_gradle_${P_GRADLE_TASKS_OPTIONS}", false)
+        testNonRegression("Jenkinsfile_Should_Run_Gradle_validate_${P_VALIDATE}_gradle_${P_GRADLE_TASKS_OPTIONS}")
 
         where:
         P_VALIDATE          | P_GRADLE_TASKS_OPTIONS | GRADLE_EXPECTED_CMD          | VAL_COUNT
@@ -54,8 +55,7 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         helper.registerAllowedMethod('sh', [String.class], shellMock)
 
         when:
-        def script = loadScript('Jenkinsfile')
-        script.execute()
+        runScript('Jenkinsfile')
 
         then:
         1 * shellMock.call(_) >> { args ->
@@ -79,8 +79,7 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         binding.getVariable('currentBuild').result = RESULT
 
         when:
-        def script = loadScript('Jenkinsfile')
-        script.execute()
+        runScript('Jenkinsfile')
 
         then:
         printCallStack()
