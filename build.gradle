@@ -23,6 +23,10 @@ dependencies {
 
 }
 
+test {
+    systemProperty "pipeline.stack.write", System.properties["pipeline.stack.write"]
+}
+
 sourceSets {
 
     test {
