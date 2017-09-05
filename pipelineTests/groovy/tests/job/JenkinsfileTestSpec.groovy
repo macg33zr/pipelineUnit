@@ -16,6 +16,9 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         addParam('GRADLE_TASKS_OPTIONS', P_GRADLE_TASKS_OPTIONS)
 
         and:
+        helper.registerAllowedMethod('validateDeclarativePipeline', [String.class], { true } )
+
+        and:
         def shellMock = Mock(Closure)
         helper.registerAllowedMethod('sh', [String.class], shellMock)
 
@@ -25,14 +28,12 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         then:
         1 * shellMock.call(_) >> { List args ->
 
-            // TODO: Understand why shell command string comes back as a single element array with JenkinsPipelineUnit 1.1
+            // Shell command string comes back as a single element array with JenkinsPipelineUnit 1.1
+            // See issue discussion: https://github.com/lesfurets/JenkinsPipelineUnit/issues/59
             println "shellMock args : ${args.toString()}"
             def shellCmd = args[0][0]
             assert shellCmd == GRADLE_EXPECTED_CMD
         }
-
-        then:
-        VAL_COUNT * shellMock.call('TODO_VALIDATION_COMMANDS')
 
         then:
         printCallStack()
@@ -42,15 +43,18 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
         testNonRegression("Jenkinsfile_Should_Run_Gradle_validate_${P_VALIDATE}_gradle_${P_GRADLE_TASKS_OPTIONS}")
 
         where:
-        P_VALIDATE          | P_GRADLE_TASKS_OPTIONS | GRADLE_EXPECTED_CMD          | VAL_COUNT
-        null                | null                   | 'gradle clean build test -i' | 0
-        true                | 'test'                 | 'gradle test'                | 1
-        false               | 'build test'           | 'gradle build test'          | 0
+        P_VALIDATE          | P_GRADLE_TASKS_OPTIONS | GRADLE_EXPECTED_CMD
+        null                | null                   | 'gradle clean build test -i'
+        true                | 'test'                 | 'gradle test'
+        false               | 'build test'           | 'gradle build test'
     }
 
     def "Jenkinsfile gradle failure should fail job"() {
 
         given:
+        helper.registerAllowedMethod('validateDeclarativePipeline', [String.class], { true } )
+
+        and:
         def shellMock = Mock(Closure)
         helper.registerAllowedMethod('sh', [String.class], shellMock)
 
@@ -59,9 +63,22 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
 
         then:
         1 * shellMock.call(_) >> { args ->
-
+            println "shellMock args : ${args.toString()}"
             binding.getVariable('currentBuild').result = 'FAILURE'
         }
+
+        then:
+        printCallStack()
+        assertJobStatusFailure()
+    }
+
+    def "Jenkinsfile validation errors should fail the job"() {
+
+        given:
+        helper.registerAllowedMethod('validateDeclarativePipeline', [String.class], { false } )
+
+        when:
+        runScript('Jenkinsfile')
 
         then:
         printCallStack()
@@ -72,6 +89,9 @@ class JenkinsfileTestSpec extends PipelineSpockTestBase {
     def "Jenkinsfile cover all build results for post sections - #RESULT"() {
 
         given:
+        helper.registerAllowedMethod('validateDeclarativePipeline', [String.class], { true } )
+
+        and:
         def shellMock = Mock(Closure)
         helper.registerAllowedMethod('sh', [String.class], shellMock)
 

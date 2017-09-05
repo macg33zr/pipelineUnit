@@ -105,6 +105,7 @@ class PipelineTestHelper extends BasePipelineTest {
         helper.registerAllowedMethod('timestamps', [], null)
         helper.registerAllowedMethod('tools', [Closure.class], null)
         helper.registerAllowedMethod('stages', [Closure.class], null)
+        helper.registerAllowedMethod('validateDeclarativePipeline', [String.class], null)
 
         /**
          * Handling of a stage skipping execution in tests due to failure, abort, when
