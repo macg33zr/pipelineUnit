@@ -45,7 +45,8 @@ pipeline {
             }
         }
 
-        stage('Static') {
+        // Pre pipeline v1.2 do it this way, awkward syntax
+        stage('Static Old Way') {
             steps {
                 parallel (
                     'branch_1' : {
@@ -58,5 +59,33 @@ pipeline {
             }
         }
 
+        // From pipeline v1.2 do it this way : requires Pipeline Model Definition Plugin v1.2+
+        stage('Static New Way') {
+
+            // Support for full parallel stages. Nice.
+            parallel {
+
+                stage('Stage 1') {
+                    steps {
+                        echo "Running pipeline v1.2 static stage 1"
+                    }
+                }
+
+                stage('Stage 2') {
+                    steps {
+                        echo "Running pipeline v1.2 static stage 2"
+                    }
+                }
+
+                stage('Stage Skipped') {
+
+                    when { expression { false } }
+
+                    steps {
+                        echo "pipeline v1.2 static stage will be skipped"
+                    }
+                }
+            }
+        }
     }
 }

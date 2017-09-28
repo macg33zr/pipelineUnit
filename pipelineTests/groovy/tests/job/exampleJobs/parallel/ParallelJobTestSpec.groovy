@@ -13,5 +13,8 @@ class ParallelJobTestSpec extends PipelineSpockTestBase {
         then:
         printCallStack()
         assertJobStatusSuccess()
+
+        then:
+        testNonRegression("Parallel_Jenkinsfile_should_complete_with_success")
     }
 }

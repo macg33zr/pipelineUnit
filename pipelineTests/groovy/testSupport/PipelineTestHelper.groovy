@@ -107,6 +107,8 @@ class PipelineTestHelper extends BasePipelineTest {
         helper.registerAllowedMethod('stages', [Closure.class], null)
         helper.registerAllowedMethod('validateDeclarativePipeline', [String.class], null)
 
+        helper.registerAllowedMethod('parallel', [Closure.class], null)
+
         /**
          * Handling of a stage skipping execution in tests due to failure, abort, when
          */
