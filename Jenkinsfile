@@ -88,7 +88,7 @@ pipeline {
     post {
         always {
             echo 'pipeline unit tests completed - recording JUnit results'
-            junit 'build/reports/**/*.xml'
+            junit 'build/test-results/**/*.xml'
         }
 
         success {

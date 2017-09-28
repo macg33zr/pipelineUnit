@@ -29,7 +29,7 @@
          Jenkinsfile.post(groovy.lang.Closure)
             Jenkinsfile.always(groovy.lang.Closure)
                Jenkinsfile.echo(pipeline unit tests completed - recording JUnit results)
-               Jenkinsfile.junit(build/reports/**/*.xml)
+               Jenkinsfile.junit(build/test-results/**/*.xml)
             Jenkinsfile.success(groovy.lang.Closure)
                Jenkinsfile.echo(pipeline unit tests PASSED)
             Jenkinsfile.failure(groovy.lang.Closure)
