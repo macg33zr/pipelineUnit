@@ -1,0 +1,4 @@
+   stepWithParams.call(param1 value, param2 value, 12345)
+      stepWithParams.echo(param1 = param1 value)
+      stepWithParams.echo(param2 = param2 value)
+      stepWithParams.echo(param3 = 12345)

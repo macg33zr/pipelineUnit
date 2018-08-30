@@ -17,6 +17,6 @@ class GlobalVariableJobTestSpec extends PipelineSpockTestBase {
         assertJobStatusSuccess()
 
         then:
-        testNonRegression("Parallel_Jenkinsfile_should_complete_with_success")
+        testNonRegression("Jenkinsfile_should_complete_with_success")
     }
 }
