@@ -21,6 +21,7 @@
                Jenkinsfile.steps(groovy.lang.Closure)
                   Jenkinsfile.script(groovy.lang.Closure)
                      Jenkinsfile.validateDeclarativePipeline(exampleJobs/parallel/Jenkinsfile)
+                     Jenkinsfile.validateDeclarativePipeline(exampleJobs/globalVariable/Jenkinsfile)
                      Jenkinsfile.validateDeclarativePipeline(Jenkinsfile)
             Jenkinsfile.stage(build, groovy.lang.Closure)
                Jenkinsfile.steps(groovy.lang.Closure)

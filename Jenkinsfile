@@ -54,6 +54,7 @@ pipeline {
 
                     // Validate the example jobs. This will only work for declarative
                     validationErrors += validatePipeline('exampleJobs/parallel/Jenkinsfile')
+                    validationErrors += validatePipeline('exampleJobs/globalVariable/Jenkinsfile')
 
                     // Validate this job
                     validationErrors += validatePipeline('Jenkinsfile')

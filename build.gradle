@@ -24,7 +24,7 @@ dependencies {
 }
 
 test {
-    systemProperty "pipeline.stack.write", System.properties["pipeline.stack.write"]
+    systemProperty "pipeline.stack.write", project.getProperty("pipeline.stack.write")
 }
 
 sourceSets {
